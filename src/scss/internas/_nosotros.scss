@@ -5,12 +5,10 @@
     @include m.desktop {
         @include m.grid(2, 2rem);
     }
-    h2{
-        text-align: left;
+    blockquote{
         margin-top: 2rem;
-        font-size: 1.8rem;
+        margin-left: 0;
         font-weight: v.$black;
-        line-height: 1.8rem;
         @include m.desktop {
             margin-top: 0;
         }
