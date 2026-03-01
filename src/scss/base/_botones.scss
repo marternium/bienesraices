@@ -8,3 +8,7 @@
 .boton-verde{
     @include m.boton(v.$verde, v.$blanco, inline-block);
 }
+
+.boton-amarillo-inline{
+    @include m.boton(v.$amarillo, v.$blanco, inline-block);
+}
