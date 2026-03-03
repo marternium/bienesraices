@@ -1,0 +1,27 @@
+@use "variables" as v;
+@use "sass:color";
+
+.dark-mode{
+    background-color: color.adjust(v.$grisOscuro, $lightness: -10%);
+    p, a, label {
+        color: v.$blanco;
+    }
+    h1, h2, h3, h4, .formulario legend, .formulario p, blockquote{
+        color: v.$gris;
+    }
+    .anuncio{
+        background-color: v.$grisOscuro;
+        border: 1px solid color.adjust(v.$grisOscuro, $lightness: -10%);
+    }
+    .precio{
+        color: v.$verde !important;
+    }
+    li{
+        img{
+            filter: invert(100%);
+        }
+    }
+    .texto-entrada h4:hover{
+        color: v.$verde;
+    }
+}
