@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     eventListeners();
     darkMode();
+    setDarkMode();
 });
 
 function eventListeners() {
@@ -20,4 +21,11 @@ function darkMode() {
     darkModeBoton.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');
     });
+}
+
+function setDarkMode() {
+    const darkMode = window.matchMedia('(prefers-color-scheme: dark)');
+    if(darkMode.matches) {
+        document.body.classList.add('dark-mode');
+    }
 }
