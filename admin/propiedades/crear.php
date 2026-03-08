@@ -1,4 +1,6 @@
 <?php
+
+require "../../includes/config/database.php";
 require "../../includes/funciones.php";
 incluirTemplate("header");
 ?>
