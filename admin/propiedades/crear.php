@@ -2,13 +2,44 @@
 
 require "../../includes/config/database.php";
 require "../../includes/funciones.php";
+
 incluirTemplate("header");
+$db = conectarDB();
+
+if($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $titulo = $_POST['titulo'];
+    $precio = $_POST['precio'];
+    $descripcion = $_POST['descripcion'];
+    $habitaciones = $_POST['habitaciones'];
+    $wc = $_POST['wc'];
+    $estacionamiento = $_POST['estacionamiento'];
+    $vendedorId = $_POST['vendedor'];
+
+    $query = "INSERT INTO propiedades (titulo, precio, descripcion, habitaciones, wc, estacionamiento, vendedor_id, creado)";
+    $query .= "VALUES (";
+    $query .= "'$titulo', ";
+    $query .= "'$precio', ";
+    $query .= "'$descripcion', ";
+    $query .= "'$habitaciones', ";
+    $query .= "'$wc', ";
+    $query .= "'$estacionamiento', ";
+    $query .= "'$vendedorId', ";
+    $query .= "CURRENT_DATE()";
+    $query .= ");";
+
+    $resultado = mysqli_query($db, $query);
+
+    if($resultado) {
+        header("Location: /admin?resultado=2");
+    }
+}
+
 ?>
 
 <main class="contenedor seccion">
     <h1>Crear nueva propiedad </h1>
     <a href="/admin" class="boton boton-verde">Volver</a>
-    <form class="formulario">
+    <form class="formulario" method="POST" action="/admin/propiedades/crear.php">
         <fieldset>
             <legend>Información General</legend>
             <label for="titulo">Título</label>
