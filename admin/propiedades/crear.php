@@ -6,6 +6,8 @@ require "../../includes/funciones.php";
 incluirTemplate("header");
 $db = conectarDB();
 
+$errores = [];
+
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $titulo = $_POST['titulo'];
     $precio = $_POST['precio'];
@@ -13,24 +15,60 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $habitaciones = $_POST['habitaciones'];
     $wc = $_POST['wc'];
     $estacionamiento = $_POST['estacionamiento'];
-    $vendedorId = $_POST['vendedor'];
+    $vendedorId = $_POST['vendedor'] ?? null;
 
-    $query = "INSERT INTO propiedades (titulo, precio, descripcion, habitaciones, wc, estacionamiento, vendedor_id, creado)";
-    $query .= "VALUES (";
-    $query .= "'$titulo', ";
-    $query .= "'$precio', ";
-    $query .= "'$descripcion', ";
-    $query .= "'$habitaciones', ";
-    $query .= "'$wc', ";
-    $query .= "'$estacionamiento', ";
-    $query .= "'$vendedorId', ";
-    $query .= "CURRENT_DATE()";
-    $query .= ");";
+    if (!$titulo) {
+        $errores[] = "El título es obligatorio";
+    }
 
-    $resultado = mysqli_query($db, $query);
+    if (!$precio) {
+        $errores[] = "El precio es obligatorio";
+    }
 
-    if($resultado) {
-        header("Location: /admin?resultado=2");
+    if (!$descripcion) {
+        $errores[] = "La descripción es obligatoria";
+    }
+
+    if (!$habitaciones) {
+        $errores[] = "El número de habitaciones es obligatorio";
+    }
+
+    if (!$wc) {
+        $errores[] = "El número de baños es obligatorio";
+    }
+
+    if (!$estacionamiento) {
+        $errores[] = "El número de estacionamientos es obligatorio";
+    }
+
+    if (!$vendedorId) {
+        $errores[] = "El vendedor es obligatorio";
+    }
+
+    if (isset($errores)) {
+        foreach ($errores as $error) {
+            echo "<div class='alerta error'>$error</div>";
+        }
+    }
+
+    if(empty($errores)) {
+        $query = "INSERT INTO propiedades (titulo, precio, descripcion, habitaciones, wc, estacionamiento, vendedor_id, creado)";
+        $query .= "VALUES (";
+        $query .= "'$titulo', ";
+        $query .= "'$precio', ";
+        $query .= "'$descripcion', ";
+        $query .= "'$habitaciones', ";
+        $query .= "'$wc', ";
+        $query .= "'$estacionamiento', ";
+        $query .= "'$vendedorId', ";
+        $query .= "CURRENT_DATE()";
+        $query .= ");";
+
+        $resultado = mysqli_query($db, $query);
+
+        if($resultado) {
+            header("Location: /admin?resultado=2");
+        }
     }
 }
 
@@ -64,7 +102,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             <legend>Vendedor</legend>
             <label for="vendedor">Vendedor</label>
             <select name="vendedor" id="vendedor">
-                <option selected disabled value="">--Seleccione un Vendedor--</option>
+                <option selected disabled value="-1">--Seleccione un Vendedor--</option>
                 <option value="1">Vendedor 1</option>
                 <option value="2">Vendedor 2</option>
                 <option value="3">Vendedor 3</option>
