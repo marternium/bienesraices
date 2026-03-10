@@ -4,9 +4,16 @@ require "../../includes/config/database.php";
 require "../../includes/funciones.php";
 
 incluirTemplate("header");
-$db = conectarDB();
 
+$db = conectarDB();
 $errores = [];
+$vendedores = [];
+
+if($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $query = "SELECT id, nombre, apellido FROM vendedores";
+    $resultado = mysqli_query($db, $query);
+    $vendedores = mysqli_fetch_all($resultado, MYSQLI_ASSOC);
+}
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $titulo = $_POST['titulo'];
@@ -61,7 +68,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $resultado = mysqli_query($db, $query);
 
         if($resultado) {
-            header("Location: /admin?resultado=2");
+            header("Location: /admin?resultado=1");
         }
     }
 }
@@ -104,9 +111,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="vendedor">Vendedor</label>
             <select name="vendedor" id="vendedor">
                 <option selected disabled value="-1">--Seleccione un Vendedor--</option>
-                <option value="1">Vendedor 1</option>
-                <option value="2">Vendedor 2</option>
-                <option value="3">Vendedor 3</option>
+                <?php
+                foreach($vendedores as $vendedor) {
+                    $id = $vendedor['id'];
+                    $nombre = $vendedor['nombre'] . " " . $vendedor['apellido'];
+                    echo "<option value='$id'>$nombre</option>";
+                }
+                ?>
             </select>
         </fieldset>
         <input type="submit" value="Crear Propiedad" class="boton boton-verde">
