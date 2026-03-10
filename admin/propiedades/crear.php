@@ -45,12 +45,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errores[] = "El vendedor es obligatorio";
     }
 
-    if (isset($errores)) {
-        foreach ($errores as $error) {
-            echo "<div class='alerta error'>$error</div>";
-        }
-    }
-
     if(empty($errores)) {
         $query = "INSERT INTO propiedades (titulo, precio, descripcion, habitaciones, wc, estacionamiento, vendedor_id, creado)";
         $query .= "VALUES (";
@@ -77,6 +71,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 <main class="contenedor seccion">
     <h1>Crear nueva propiedad </h1>
     <a href="/admin" class="boton boton-verde">Volver</a>
+    <?php
+    if (isset($errores)) {
+        foreach ($errores as $error) {
+            echo "<div class='alerta error'>$error</div>";
+        }
+    }
+    ?>
     <form class="formulario" method="POST" action="/admin/propiedades/crear.php">
         <fieldset>
             <legend>Información General</legend>
