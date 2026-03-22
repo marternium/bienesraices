@@ -117,7 +117,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             <legend>Vendedor</legend>
             <label for="vendedor">Vendedor</label>
             <select name="vendedor" id="vendedor">
-                <option <?php echo $vendedorId === "" ? "selected" : ""; ?> disabled value="-1">-- Seleccione un vendedor--</option>
+                <option <?php echo $vendedorId === "" || $vendedorId === null ? "selected" : ""; ?> disabled value="-1">-- Seleccione un vendedor--</option>
                 <?php foreach ($vendedores as $vendedor) { ?>
                     <option
                         <?php echo $vendedorId === $vendedor['id'] ? "selected" : ""; ?>
