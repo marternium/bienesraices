@@ -1,6 +1,3 @@
-> [!IMPORTANT]
-> Proyecto en construcción
-
 # Bienes Raices
 Proyecto del curso de Desarrollo Web de un negocio inmobiliario.
 
