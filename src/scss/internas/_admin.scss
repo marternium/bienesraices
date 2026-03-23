@@ -1,0 +1,21 @@
+@use 'base/variables' as v;
+
+table.propiedades{
+    margin-top: 4rem;
+    width: 100%;
+    border-spacing: 0;
+    thead{
+        background-color: v.$verde;
+        text-align: left;
+        th{
+            padding: 2rem;
+        }
+    }
+    th{
+        color: v.$blanco;
+    }
+    .imagen-tabla{
+        width: 20rem;
+        padding: .5rem;
+    }
+}
