@@ -34,6 +34,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$titulo) {
         $errores[] = "El título es obligatorio";
+    } elseif (strlen($titulo) > 45) {
+        $errores[] = "El título debe tener menos de 45 caracteres";
     }
 
     if (!$precio) {
