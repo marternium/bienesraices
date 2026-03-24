@@ -15,11 +15,15 @@ table.propiedades{
         color: v.$blanco;
     }
     .imagen-tabla{
-        width: 20rem;
+        width: 15rem;
         padding: .5rem;
     }
     tr:not(:last-of-type) td{
         border-bottom: 1px solid v.$verde;
+    }
+    .boton{
+        margin-bottom: 1rem;
+        margin-top: 1rem;
     }
 }
 
