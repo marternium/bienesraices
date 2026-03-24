@@ -15,6 +15,10 @@ incluirTemplate("header");
     <h1>Administrador de Bienes Raices</h1>
     <?php if ($resultado == 1) { ?>
         <p class="alerta exito"> La nueva propiedad se guardo correctamente </p>
+    <?php } elseif ($resultado == 2) { ?>
+        <p class="alerta exito"> La propiedad se actualizo correctamente </p>
+    <?php } elseif ($resultado == 3) { ?>
+        <p class="alerta exito"> La propiedad se elimino correctamente </p>
     <?php } ?>
     <a href="/admin/propiedades/crear.php" class="boton boton-verde">Nueva propiedad</a>
     <table class="propiedades">
@@ -34,7 +38,10 @@ incluirTemplate("header");
                 <td><?php echo $propiedad["titulo"]; ?></td>
                 <td><img src="imagenes/<?php echo $propiedad["imagen"]; ?>" alt="imagen de la propiedad" class="imagen-tabla"></td>
                 <td>$<?php echo $propiedad["precio"]; ?></td>
-                <td><a href="" class="boton boton-rojo-block">Eliminar</a><a href="" class="boton boton-amarillo-block">Actualizar</a></td>
+                <td>
+                    <a href="" class="boton boton-rojo-block">Eliminar</a>
+                    <a href="admin/propiedades/actualizar.php?id=<?php echo $propiedad["id"]; ?>" class="boton boton-amarillo-block">Actualizar</a>
+                </td>
             </tr>
             <?php endwhile; ?>
         </tbody>
