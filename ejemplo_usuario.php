@@ -12,5 +12,5 @@ $query = "INSERT INTO usuarios (email, password) VALUES ('$email', '$password')"
 $resultado = mysqli_query($db, $query);
 
 if($resultado) {
-    header("Location: /admin");
+    header("Location: /login.php");
 }
