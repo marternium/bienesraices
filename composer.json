@@ -1,0 +1,13 @@
+{
+    "name": "marternium/bienesraices",
+    "description": "Sitio de bienes raices",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "María Méndez",
+            "email": "marternium@gmail.com"
+        }
+    ],
+    "require": {}
+}
