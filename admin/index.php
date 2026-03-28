@@ -1,9 +1,7 @@
 <?php
-require "../includes/funciones.php";
+require "../includes/app.php";
 
 estaAutenticado();
-
-require "../includes/config/database.php";
 
 $db = conectarDB();
 

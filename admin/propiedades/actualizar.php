@@ -1,8 +1,8 @@
 <?php
-require "../../includes/funciones.php";
+require "../../includes/app.php";
+
 estaAutenticado();
 
-require "../../includes/config/database.php";
 incluirTemplate("header");
 
 $id = filter_var($_GET["id"], FILTER_VALIDATE_INT);
