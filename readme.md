@@ -10,6 +10,8 @@ Proyecto del curso de Desarrollo Web de un negocio inmobiliario.
 - JavaScript
 - MySQL
 - PHP
+- Gulp (con Node.js - npm)
+- Composer
 
 ## Para utilizarlo
 
@@ -20,3 +22,4 @@ Proyecto del curso de Desarrollo Web de un negocio inmobiliario.
 4. Renombrar `ejemplo_db_variables.php` a `db_variables.php` y configurar las variables de la base de datos
 5. Iniciar el servidor con `php -S localhost:3000`
 6. Para acceder al panel de administración debes crear un usuario, para ello renombra el archivo `ejemplo_usuario.php` a `usuario.php` y coloca un email y password que desees utilizar, luego puedes ingresar a la url `http://localhost:3000/usuario.php` y se creará un usuario para acceder a el panel de administración mediante `http://localhost:3000/admin`.
+7. Ejecutar `composer update` para instalar las dependencias de composer.
