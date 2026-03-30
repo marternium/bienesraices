@@ -1,5 +1,8 @@
 <?php
 require "../../includes/app.php";
+use App\Propiedad;
+
+$propiedad = new Propiedad;
 
 estaAutenticado();
 
