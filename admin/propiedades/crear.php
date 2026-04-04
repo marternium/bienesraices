@@ -1,15 +1,15 @@
 <?php
 require "../../includes/app.php";
 use App\Propiedad;
-
-$propiedad = new Propiedad;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager as Image;
 
 estaAutenticado();
 
 incluirTemplate("header");
 
 $db = conectarDB();
-$errores = [];
+$errores = Propiedad::getErrores();
 $vendedores = [];
 $titulo = "";
 $precio = "";
@@ -26,78 +26,36 @@ mysqli_free_result($resultado);
 
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $titulo = mysqli_real_escape_string($db, $_POST['titulo']);
-    $precio = mysqli_real_escape_string($db, $_POST['precio']);
-    $descripcion = mysqli_real_escape_string($db, $_POST['descripcion']);
-    $habitaciones = mysqli_real_escape_string($db, $_POST['habitaciones']);
-    $wc = mysqli_real_escape_string($db, $_POST['wc']);
-    $estacionamiento = mysqli_real_escape_string($db, $_POST['estacionamiento']);
-    $vendedorId = isset($_POST['vendedor']) ? mysqli_real_escape_string($db, $_POST['vendedor']) : "";
-    $imagen = $_FILES['imagen'];
 
-    if (!$titulo) {
-        $errores[] = "El título es obligatorio";
-    } elseif (strlen($titulo) > 45) {
-        $errores[] = "El título debe tener menos de 45 caracteres";
+    $propiedad = new Propiedad($_POST);
+
+    $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
+
+    if($_FILES['imagen']['tmp_name']) {
+        $manager = new Image(Driver::class);
+        $imagen = $manager->decodePath($_FILES['imagen']['tmp_name'])->cover(800,600);
+        $propiedad->setImagen($nombreImagen);
     }
 
-    if (!$precio) {
-        $errores[] = "El precio es obligatorio";
-    }
+    $errores = $propiedad->validar();
 
-    if (!$imagen['name'] || $imagen['error']) {
-        $errores[] = "La imagen es obligatoria";
-    } else {
-        $medida = 1000 * 500;
-        if($imagen["size"] > $medida) {
-            $errores[] = "La imagen debe ser menor a 500kb";
-        }
-    }
-
-    if (!$descripcion) {
-        $errores[] = "La descripción es obligatoria";
-    }
-
-    if (!$habitaciones) {
-        $errores[] = "El número de habitaciones es obligatorio";
-    }
-
-    if (!$wc) {
-        $errores[] = "El número de baños es obligatorio";
-    }
-
-    if (!$estacionamiento) {
-        $errores[] = "El número de estacionamientos es obligatorio";
-    }
-
-    if (!$vendedorId) {
-        $errores[] = "El vendedor es obligatorio";
-    }
+    $titulo = $_POST['titulo'] ?? "";
+    $precio = $_POST['precio'] ?? "";
+    $descripcion = $_POST['descripcion'] ?? "";
+    $habitaciones = $_POST['habitaciones'] ?? "";
+    $wc = $_POST['wc'] ?? "";
+    $estacionamiento = $_POST['estacionamiento'] ?? "";
+    $vendedorId = $_POST['vendedorId'] ?? "";
 
     if(empty($errores)) {
-        $carpetaImagenes = "../../imagenes/";
-        if(!is_dir($carpetaImagenes)) {
-            mkdir($carpetaImagenes);
+
+        if(!is_dir(CARPETA_IMAGENES)) {
+            mkdir(CARPETA_IMAGENES);
         }
 
-        $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
+        $imagen->save(CARPETA_IMAGENES . $nombreImagen);
 
-        move_uploaded_file($imagen['tmp_name'], $carpetaImagenes . $nombreImagen);
-
-        $query = "INSERT INTO propiedades (titulo, precio, imagen, descripcion, habitaciones, wc, estacionamiento, vendedor_id, creado)";
-        $query .= "VALUES (";
-        $query .= "'$titulo', ";
-        $query .= "'$precio', ";
-        $query .= "'$nombreImagen', ";
-        $query .= "'$descripcion', ";
-        $query .= "'$habitaciones', ";
-        $query .= "'$wc', ";
-        $query .= "'$estacionamiento', ";
-        $query .= "'$vendedorId', ";
-        $query .= "CURRENT_DATE()";
-        $query .= ");";
-
-        $resultado = mysqli_query($db, $query);
+        $resultado = $propiedad->guardar();
 
         if($resultado) {
             header("Location: /admin?resultado=1");
@@ -141,7 +99,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         <fieldset>
             <legend>Vendedor</legend>
             <label for="vendedor">Vendedor</label>
-            <select name="vendedor" id="vendedor">
+            <select name="vendedorId" id="vendedorId">
                 <option <?php echo $vendedorId === "" ? "selected" : ""; ?> disabled value="-1">-- Seleccione un vendedor--</option>
                 <?php foreach ($vendedores as $vendedor) { ?>
                     <option
